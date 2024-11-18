@@ -14,5 +14,5 @@ docker run -it --rm mheers/sphinx-rego
 cd ci/
 
 export $(cat .env | xargs)
-dagger call build-and-push-image --src ../ --registry-token=env:REGISTRY_ACCESS_TOKEN
+dagger call build-and-push-image --registry-token=env:REGISTRY_ACCESS_TOKEN
 ```

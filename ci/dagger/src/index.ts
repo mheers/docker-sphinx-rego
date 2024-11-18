@@ -27,11 +27,17 @@ export class Ci {
   async buildAndPushImage(registryToken: Secret): Promise<string> {
     return dag.container().from(baseImage)
 
+      // update package list
+      .withExec(["apt-get", "update"])
+
+      // install wget
+      .withExec(["apt-get", "install", "-y", "wget"])
+
       // Install sphinx-rego
       .withExec(["pip3", "install", "sphinx-rego"])
 
       // Install opa
-      .withExec(["curl", "-L", "-o", "/usr/bin/opa", `https://openpolicyagent.org/downloads/v${opaVersion}/opa_linux_amd64_static`])
+      .withExec(["wget", "-O", "/usr/bin/opa", `https://openpolicyagent.org/downloads/v${opaVersion}/opa_linux_amd64_static`])
       .withExec(["chmod", "+x", "/usr/bin/opa"])
 
       // Push the image
