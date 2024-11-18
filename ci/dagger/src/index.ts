@@ -19,13 +19,22 @@ const username = "mheers"
 
 const baseImage = "sphinxdoc/sphinx:8.1.3"
 const targetImage = "docker.io/mheers/sphinx-rego:latest"
+const opaVersion = "0.69.0"
 
 @object()
 export class Ci {
   @func()
   async buildAndPushImage(registryToken: Secret): Promise<string> {
     return dag.container().from(baseImage)
+
+      // Install sphinx-rego
       .withExec(["pip3", "install", "sphinx-rego"])
+
+      // Install opa
+      .withExec(["curl", "-L", "-o", "/usr/bin/opa", `https://openpolicyagent.org/downloads/v${opaVersion}/opa_linux_amd64_static`])
+      .withExec(["chmod", "+x", "/usr/bin/opa"])
+
+      // Push the image
       .withRegistryAuth(targetImage, username, registryToken)
       .publish(targetImage)
   }
