@@ -18,8 +18,8 @@ import { dag, object, func, Secret } from "@dagger.io/dagger"
 const username = "mheers"
 
 const baseImage = "sphinxdoc/sphinx:8.1.3"
-const targetImage = "docker.io/mheers/sphinx-rego:latest"
-const opaVersion = "0.69.0"
+const targetImage = "docker.io/mheers/sphinx-rego:8.1.3"
+const opaVersion = "1.1.0"
 
 @object()
 export class Ci {
